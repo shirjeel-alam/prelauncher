@@ -1,5 +1,15 @@
-class Share < ActiveRecord::Base
+# == Schema Information
+#
+# Table name: shares
+#
+#  id             :integer          not null, primary key
+#  user_id        :integer
+#  social_network :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
 
+class Share < ActiveRecord::Base
 	belongs_to :user
 	validates_presence_of :social_network, :user
 
@@ -30,6 +40,4 @@ class Share < ActiveRecord::Base
 	def pinterest_link(root_url)
 		"https://www.pinterest.com/pin/create/button/?url=#{URI.escape(user.referral_url(root_url))}&media=#{URI.escape(Setting.pinterest_image.present? ? root_url + Setting.pinterest_image.url : '')}&description=#{URI.escape(data[:pinterest_description])}"
 	end
-
-
 end

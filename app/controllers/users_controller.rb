@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id            :integer          not null, primary key
+#  email         :string           not null
+#  referral_code :string
+#  referrer_id   :integer
+#  ip_address    :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 class UsersController < ApplicationController
 	before_action :retrive_referrer, only: :new
 	before_action :check_session, only: :new
@@ -5,14 +18,13 @@ class UsersController < ApplicationController
 	before_action :fetch_user, only: [:show, :destroy]
 	before_action :authenticate_admin, only: [:index, :destroy]
 
-
 	def index
 		@users = User.all.order("created_at desc").paginate(:page => params[:page], :per_page => 100)
 
 		respond_to do |format|
-	    	format.html {render layout: "dashboard"}
-	    	format.csv { send_data User.all.as_csv }
-    	end 
+    	format.html {render layout: "dashboard"}
+    	format.csv { send_data User.all.as_csv }
+  	end
 	end
 
 	def destroy
@@ -23,24 +35,20 @@ class UsersController < ApplicationController
 		end
 	end
 
-
 	def new
 		@user = User.new
 		respond_to do |format|
-            format.html
-        end
+      format.html
+    end
 	end
 
 	def show
 		respond_to do |format|
-            format.html
-        end
+      format.html
+    end
 	end
 
-
-
 	def create
-
 		@user = User.new(user_params)
 		@user.referrer_id = session[:referrer_id] if session[:referrer_id].present?
 		@user.ip_address = request.ip
@@ -48,18 +56,16 @@ class UsersController < ApplicationController
 		if @user.save
 			cookies[:user_id] = @user.id
 			respond_to do |format|
-	            format.html {redirect_to user_path(@user.referral_code), notice: "Thank you for singing up."}
-	        end
-	    else
+        format.html {redirect_to user_path(@user.referral_code), notice: "Thank you for singing up."}
+    	end
+    else
 			respond_to do |format|
-	            format.html {redirect_to root_path, alert: "Subscribing multiple emails is not allowed."}
-	        end
-	    end
+        format.html {redirect_to root_path, alert: "Subscribing multiple emails is not allowed."}
+      end
+    end
 	end
 
-
 	private 
-
 
 	def check_session
 		if cookies[:user_id] && User.where(id: cookies[:user_id]).any? && !current_admin
@@ -84,8 +90,7 @@ class UsersController < ApplicationController
 	end
 
 	def user_params
-    	params.require(:user).permit(:email)
-  	end 
-
+  	params.require(:user).permit(:email)
+	end 
 
 end

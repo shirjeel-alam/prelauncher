@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.5'
 # Use PostgreSQL as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -28,15 +27,15 @@ gem 'simple_form'
 # User authentication 
 gem 'devise'
 
-gem 'unicorn'
+# gem 'unicorn'
+gem 'puma'
 gem 'rack-timeout'
 
+# TODO: Replace with sucker_punch
 gem 'delayed_job_active_record'
 
 # Load twitter bootstrap CSS, JavaSript files
 gem 'bootstrap-sass'
-
-gem 'rails_12factor', group: :production
 
 # Font-Awesome web fonts and stylesheets http://fortawesome.github.io/Font-Awesome/icons/
 gem "font-awesome-rails"
@@ -45,7 +44,17 @@ gem "paperclip"
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
 
-group :development, :test do
+# For Heroku Deployments
+gem 'rails_12factor', group: :production
 
+group :development do
+  gem 'quiet_assets'
+  gem 'better_errors'
 end
 
+group :development, :test do
+  gem 'spring'
+  gem 'annotate'
+  gem 'pry-rails'
+  gem 'letter_opener'
+end
